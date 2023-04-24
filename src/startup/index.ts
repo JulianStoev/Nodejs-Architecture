@@ -5,13 +5,13 @@ import dbLoader from './db';
 
 export default async ({ expressApp }: { expressApp: express.Application }) => {
 
-  // database
-  await dbLoader();
+    // database
+    await dbLoader();
 
-  // express
-  expressLoader({ app: expressApp });
+    // express
+    expressLoader({ app: expressApp });
 
-  // routing
-  routesLoader({ app: expressApp });
+    // routing
+    routesLoader({ app: expressApp });
 
 };

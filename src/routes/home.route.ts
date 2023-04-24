@@ -5,15 +5,15 @@ import { filterResponse } from "../tools/response.tool";
 const home = Router();
 
 home.get('/getHome', async (req: Request, res: Response) => {
-  const homePage = getHome();
+    const homePage = getHome();
 
-  const [homeResult] = await Promise.all([homePage]);
+    const [homeResult] = await Promise.all([homePage]);
 
-  const result = {
-    ...filterResponse({response: homeResult, name: 'home', rows: 0})
-  };
+    const result = {
+        ...filterResponse({ response: homeResult, name: 'home', rows: 0 })
+    };
 
-  res.json(result);
+    res.json(result);
 });
 
 export default home;
