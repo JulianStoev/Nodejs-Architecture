@@ -5,8 +5,6 @@ import home from '../routes/home.route';
 
 export default ({ app }: { app: express.Application }) => {
 
-    const p = config.api.prefix;
-
-    app.use(p + '/home', home);
+    app.use(`${config.api.prefix}/home`, home);
 
 }

@@ -1,5 +1,3 @@
-import { dbInit } from "../lib/db";
+import { dbInit } from "../lib/db.lib";
 
-export default async () => {
-    await dbInit();
-}
+export default async () => await dbInit();

@@ -3,7 +3,7 @@ import expressLoader from './express';
 import routesLoader from './routes';
 import dbLoader from './db';
 
-export default async ({ expressApp }: { expressApp: express.Application }) => {
+export default async function initStartup(expressApp: express.Application) {
 
     // database
     await dbLoader();
@@ -13,5 +13,4 @@ export default async ({ expressApp }: { expressApp: express.Application }) => {
 
     // routing
     routesLoader({ app: expressApp });
-
-};
+}

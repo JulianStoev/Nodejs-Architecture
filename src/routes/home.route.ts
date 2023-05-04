@@ -4,16 +4,20 @@ import { filterResponse } from "../tools/response.tool";
 
 const home = Router();
 
-home.get('/getHome', async (req: Request, res: Response) => {
+home.get('/', async (req: Request, res: Response) => {
     const homePage = getHome();
 
-    const [homeResult] = await Promise.all([homePage]);
-
-    const result = {
-        ...filterResponse({ response: homeResult, name: 'home', rows: 0 })
-    };
-
-    res.json(result);
+    try {
+        const [ homeResult ] = await Promise.all([homePage]);
+        const result = {
+            ...filterResponse({ response: homeResult, name: 'home', rows: 0 })
+        };
+    
+        res.json(result);
+    } catch(err) {
+        console.log('error', err);
+    }
+    
 });
 
 export default home;
