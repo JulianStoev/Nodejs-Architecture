@@ -1,22 +1,23 @@
-export default {
+const config = {
     server: {
-        host: 'localhost',
-        port: 3000
+        host: process.env.SERVER_HOST || '',
+        port: process.env.SERVER_PORT || ''
     },
 
     db: {
-        user: '',
-        pass: '',
-        host: '',
-        database: ''
+        user: process.env.DB_USER || '',
+        pass: process.env.DB_PASS || '',
+        host: process.env.DB_HOST || '',
+        database: process.env.DB_DATABASE || ''
     },
 
     api: {
-        prefix: '/api'
+        prefix: process.env.API_PREFIX || ''
     },
 
-    paths: {
-        domain: '',
-        imgUrl: ''
+    headers: {
+        auth: process.env.HEADERS_AUTH || ''
     }
 };
+
+export default config;

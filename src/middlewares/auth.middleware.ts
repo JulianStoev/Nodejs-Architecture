@@ -1,10 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { isLoggedDb } from "../models/auth.model";
+import config from "../config";
+import { eventEmitter } from "../startup/events.startup";
 
-export const isLogged = async (req: Request, res: Response, next: NextFunction) => {
-    const authToken = req.header('auth');
+export async function isLogged(req: Request, res: Response, next: NextFunction): Promise<void> {
+
+    const authToken = req.header(config.headers.auth);
     if (authToken === undefined) {
-        response(res, 'auth');
+        emitUnauthorized(req.baseUrl);
+        next({status: 401});
         return;
     }
 
@@ -13,15 +17,17 @@ export const isLogged = async (req: Request, res: Response, next: NextFunction) 
         if (isLogged.sqlMessage === undefined) {
             next();
         } else {
-            response(res, isLogged.sqlMessage);
+            emitUnauthorized(req.path + '; ' + isLogged.sqlMessage);
+            next({status: 401, message: isLogged.sqlMessage});
         }
         return
     }
 
-    response(res, 'auth');
+    next({status: 401});
 }
 
 
-function response(res: Response, message: string): void {
-    res.json({ success: 0, message: message });
+// if you wish to notify that there was an error
+function emitUnauthorized(message: string): void {
+    eventEmitter.emit('unauthorized', message);
 }

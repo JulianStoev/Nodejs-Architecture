@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import config from './config';
 import express from 'express';
 import initStartup from './startup';
@@ -15,9 +18,3 @@ function startServer() {
 }
 
 startServer();
-
-
-// prevents the server from dying on your unhandled exceptions
-process.on('uncaughtException', (err) => {
-    console.log('Exception:', err);
-});
