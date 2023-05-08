@@ -1,21 +1,17 @@
 import { getHome } from "../services/home.service";
-import { Router, Request, Response } from "express";
-import { filterResponse } from "../tools/response.tool";
+import { Router, Request, Response, NextFunction } from "express";
 
 const home = Router();
 
-home.get('/', async (req: Request, res: Response) => {
-    const homePage = getHome();
-
-    try {
-        const [ homeResult ] = await Promise.all([homePage]);
-        const result = {
-            ...filterResponse({ response: homeResult, name: 'home', rows: 0 })
-        };
+home.get('/', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     
-        res.json(result);
+    try {
+        const homePage = getHome();
+        const [ homeResult ] = await Promise.all([homePage]);
+    
+        res.json({ home: homeResult });
     } catch(err) {
-        console.log('error', err);
+        next(err || 'Could not get home data');
     }
     
 });

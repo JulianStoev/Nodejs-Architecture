@@ -3,19 +3,15 @@ import config from '../config';
 
 let connPool!: mysql.Pool;
 
-export async function dbInit() {
-    try {
-        connPool = mysql.createPool({
-            host: config.db.host,
-            user: config.db.user,
-            password: config.db.pass,
-            database: config.db.database,waitForConnections: true,
-            connectionLimit: 10,
-            queueLimit: 0
-        });
-    } catch(err) {
-        console.log(err);
-    }
+export function dbInit(): void {
+    connPool = mysql.createPool({
+        host: config.db.host,
+        user: config.db.user,
+        password: config.db.pass,
+        database: config.db.database,waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0
+    });
 }
 
 export const dbQuery = async (query: string, values?: any): Promise<any> => {

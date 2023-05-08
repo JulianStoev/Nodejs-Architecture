@@ -1,20 +1,17 @@
-import { Router, Request, Response } from "express";
+import { Router, Request, Response, NextFunction } from "express";
 
 const healthCheck = Router();
 
-healthCheck.get('/', async (req: Request, res: Response) => {
-
-    const healthcheck = {
-        uptime: process.uptime(),
-        message: 'OK',
-        timestamp: new Date()
-    };
+healthCheck.get('/', (req: Request, res: Response, next: NextFunction): void => {
 
     try {
-        res.send(healthcheck);
+        res.send({
+            uptime: process.uptime(),
+            message: 'OK',
+            timestamp: new Date()
+        });
     } catch (error) {
-        healthcheck.message = error as string;
-        res.status(503).send();
+        next({status: 503, message: error});
     }
     
 });

@@ -1,16 +1,21 @@
 import express from 'express';
-import expressLoader from './express';
-import routesLoader from './routes';
-import dbLoader from './db';
+import expressStartup from './express.startup';
+import routesStartup from './routes.startup';
+import dbStartup from './db.startup';
+import errorsStartup from './errors.startup';
 
-export default async function initStartup(expressApp: express.Application) {
+export default function initStartup(expressApp: express.Application): void {
 
     // database
-    await dbLoader();
+    dbStartup();
 
     // express
-    expressLoader({ app: expressApp });
+    expressStartup( expressApp );
 
     // routing
-    routesLoader({ app: expressApp });
+    routesStartup( expressApp );
+
+    // error handling, must be the last loaded item
+    errorsStartup( expressApp );
+
 }
