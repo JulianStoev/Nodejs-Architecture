@@ -1,5 +1,5 @@
 import express from 'express';
-import { clientErrorHandler } from '../middlewares/errors.middleware';
+import { clientErrorHandler } from '../middlewares/errors/errors.middleware';
 
 export default function errorsStartup( app: express.Application ): void {
 

@@ -1,10 +1,9 @@
-import { isLogged } from "../middlewares/auth.middleware";
 import { getHome } from "../services/home.service";
 import { Router, Request, Response, NextFunction } from "express";
 
 const home = Router();
 
-home.get('/', isLogged,  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+home.get('/',  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     
     try {
         const homePage = getHome();
