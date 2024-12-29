@@ -1,7 +1,7 @@
-import { dbInit } from "../lib/db.lib";
+import { mysqlInit } from "../lib/mysql/mysql.lib";
 
 export default function DbStartup(): void {
 
-    dbInit();
+    mysqlInit();
 
 }

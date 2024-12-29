@@ -12,8 +12,8 @@ export default [
     {
         rules: {
             "indent": ["error", 4, { "SwitchCase": 1 }],
-            "typescript-eslint/no-explicit-any": 0,
-            "typescript-eslint/no-unused-vars": 1
+            "@typescript-eslint/no-explicit-any": 0,
+            "@typescript-eslint/no-unused-vars": 1
         }
     }
 ];

@@ -1,7 +1,7 @@
 import express from 'express';
 
-import home from '../routes/home.route';
-import healthCheck from '../routes/healthcheck.route';
+import home from '../api/routes/home.route';
+import healthCheck from '../api/routes/healthcheck.route';
 
 export default function RoutesStartup( app: express.Application ): void {
 

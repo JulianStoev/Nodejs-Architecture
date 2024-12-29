@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { isLoggedDb } from "../models/auth.model";
-import { eventEmitter } from "../startup/Events.startup";
-import { HEADERS_AUTH } from "../config/headers.config";
+import { HEADERS_AUTH } from "../../../config/headers.config";
+import { isLoggedDb } from "../../../dal/mysql/auth.dal";
+import { eventEmitter } from "../../../startup/Events.startup";
 
 export async function isLogged(req: Request, res: Response, next: NextFunction): Promise<void> {
 
@@ -17,7 +17,7 @@ export async function isLogged(req: Request, res: Response, next: NextFunction):
         if (isLogged.sqlMessage === undefined) {
             next();
         } else {
-            emitUnauthorized(req.path + '; ' + isLogged.sqlMessage);
+            emitUnauthorized(`${req.path}; ${isLogged.sqlMessage}`);
             next({status: 401, message: isLogged.sqlMessage});
         }
         return
@@ -25,7 +25,6 @@ export async function isLogged(req: Request, res: Response, next: NextFunction):
 
     next({status: 401});
 }
-
 
 // if you wish to notify that there was an error
 function emitUnauthorized(message: string): void {

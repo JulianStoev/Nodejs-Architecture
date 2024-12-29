@@ -1,9 +1,32 @@
-import { fetchMethod, fetchRequest } from "./fetch.interface";
+import { API_URL } from "../../config/api.config";
+import { ajaxErrorResponse, fetchMethod, FetchInterface } from "./fetch.interface";
 
-function Fetch(data: fetchRequest, method: fetchMethod): Promise<any> {
+async function buildError(err: unknown): Promise<ajaxErrorResponse<object>> {
+    const response: ajaxErrorResponse<object> = {
+        status: 0,
+        statusText: '',
+        body: err || {}
+    };
 
-    const url = '';
-    
+    if (err instanceof Response) {
+        const body = await err.text();
+        try {
+            // safely check if valid json
+            response.body = JSON.parse(body);
+        } catch(err) {
+            console.error(err);
+        }
+        response.status = err.status;
+        response.statusText = err.statusText;
+    }
+
+    return response;
+}
+
+function Fetch(data: FetchInterface, method: fetchMethod): Promise<any> {
+
+    let url = (data.url ? data.url : API_URL + data.uri)
+
     const toSend = {
         method: method,
         mode: 'cors' as RequestMode,
@@ -18,13 +41,19 @@ function Fetch(data: fetchRequest, method: fetchMethod): Promise<any> {
     }
 
     if (data.data) {
-        (method === 'GET') ? data.uri += '?' + new URLSearchParams(data.data) : toSend.body = JSON.stringify(data.data);
+        if (method === 'GET') {
+            if (data.uri) {
+                url += '?' + new URLSearchParams(data.data);
+            }
+        } else {
+            toSend.body = JSON.stringify(data.data);
+        }
     }
 
     return new Promise((resolve, reject) => {
         const fetchFn = async (): Promise<any> => {
             try {
-                await fetch(url + data.uri, toSend)
+                await fetch(url, toSend)
                     .then(response => response.ok ? response.text() : Promise.reject(response))
                     .then(response => {
                         // convert the response to text first to avoid error in case of no response when parsing directly to json
@@ -36,30 +65,7 @@ function Fetch(data: fetchRequest, method: fetchMethod): Promise<any> {
                 if (data.errors === false) {
                     console.error('[Fetch error]', err);
                 } else {
-                    const response = {
-                        status: 0,
-                        statusText: '',
-                        body: err
-                    };
-
-                    if (err instanceof Response) {
-                        const parseTextFn = async (errror: Response) => {
-                            let body = await errror.text();
-                            try {
-                                // safely check if valid json
-                                body = JSON.parse(body);
-                            } catch(err) {
-                                console.error(err);
-                            }
-        
-                            response.status = errror.status;
-                            response.statusText = errror.statusText;
-                            response.body = body;
-                        };
-                        parseTextFn(err);
-                    }
-
-                    reject(response);
+                    reject(buildError(err));
                 }
             }
         };
@@ -67,10 +73,10 @@ function Fetch(data: fetchRequest, method: fetchMethod): Promise<any> {
     });
 }
 
-export const post      = (data: fetchRequest): Promise<any> => Fetch(data, 'POST');
-export const put       = (data: fetchRequest): Promise<any> => Fetch(data, 'PUT');
-export const get       = (data: fetchRequest): Promise<any> => Fetch(data, 'GET');
-export const patch     = (data: fetchRequest): Promise<any> => Fetch(data, 'PATCH');
-export const head      = (data: fetchRequest): Promise<any> => Fetch(data, 'HEAD');
-export const options   = (data: fetchRequest): Promise<any> => Fetch(data, 'OPTIONS');
-export const del       = (data: fetchRequest): Promise<any> => Fetch(data, 'DELETE');
+export const post      = (data: FetchInterface): Promise<any> => Fetch(data, 'POST');
+export const put       = (data: FetchInterface): Promise<any> => Fetch(data, 'PUT');
+export const get       = (data: FetchInterface): Promise<any> => Fetch(data, 'GET');
+export const patch     = (data: FetchInterface): Promise<any> => Fetch(data, 'PATCH');
+export const head      = (data: FetchInterface): Promise<any> => Fetch(data, 'HEAD');
+export const options   = (data: FetchInterface): Promise<any> => Fetch(data, 'OPTIONS');
+export const del       = (data: FetchInterface): Promise<any> => Fetch(data, 'DELETE');

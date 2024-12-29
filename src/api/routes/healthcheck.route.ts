@@ -5,7 +5,7 @@ const healthCheck = Router();
 healthCheck.get('/', (req: Request, res: Response, next: NextFunction): void => {
 
     try {
-        res.send({
+        res.status(200).send({
             uptime: process.uptime(),
             message: 'OK',
             timestamp: new Date()
