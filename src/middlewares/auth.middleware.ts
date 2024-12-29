@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { isLoggedDb } from "../models/auth.model";
 import config from "../config";
-import { eventEmitter } from "../startup/events.startup";
+import { eventEmitter } from "../startup/Events.startup";
 
 export async function isLogged(req: Request, res: Response, next: NextFunction): Promise<void> {
 

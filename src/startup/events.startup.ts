@@ -3,7 +3,7 @@ import { EventEmitter } from 'node:events';
 
 export const eventEmitter = new EventEmitter();
 
-export default function eventsStartup(): void {
+export default function EventsStartup(): void {
 
     // handle error events
     errorEvents(eventEmitter);

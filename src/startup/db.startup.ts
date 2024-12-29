@@ -1,6 +1,6 @@
 import { dbInit } from "../lib/db.lib";
 
-export default function dbStartup(): void {
+export default function DbStartup(): void {
 
     dbInit();
 

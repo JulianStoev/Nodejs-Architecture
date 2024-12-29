@@ -1,0 +1,1 @@
+export const HEADERS_AUTH = process.env.HEADERS_AUTH || '';

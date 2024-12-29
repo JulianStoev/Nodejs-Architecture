@@ -1,14 +1,15 @@
 import mysql, { escape } from 'mysql2/promise';
-import config from '../config';
+import { DB_DATABASE, DB_HOST, DB_PASS, DB_USER } from '../config/db.config';
 
 let connPool!: mysql.Pool;
 
 export function dbInit(): void {
     connPool = mysql.createPool({
-        host: config.db.host,
-        user: config.db.user,
-        password: config.db.pass,
-        database: config.db.database,waitForConnections: true,
+        host: DB_HOST,
+        user: DB_USER,
+        password: DB_PASS,
+        database: DB_DATABASE,
+        waitForConnections: true,
         connectionLimit: 10,
         queueLimit: 0
     });
