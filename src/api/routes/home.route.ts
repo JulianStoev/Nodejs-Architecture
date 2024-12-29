@@ -1,4 +1,4 @@
-import { getHome } from "../services/local/home.service";
+import { getHome } from "../services/local/home/home.service";
 import { Router, Request, Response, NextFunction } from "express";
 
 const home = Router();
