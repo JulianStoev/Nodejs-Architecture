@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { isLoggedDb } from "../models/auth.model";
-import config from "../config";
 import { eventEmitter } from "../startup/Events.startup";
+import { HEADERS_AUTH } from "../config/headers.config";
 
 export async function isLogged(req: Request, res: Response, next: NextFunction): Promise<void> {
 
-    const authToken = req.header(config.headers.auth);
+    const authToken = req.header(HEADERS_AUTH);
     if (authToken === undefined) {
         emitUnauthorized(req.baseUrl);
         next({status: 401});
